@@ -7,8 +7,8 @@ WORKDIR /app
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
 
-# Download dependencies (cached layer)
-RUN ./mvnw dependency:go-offline
+# Make mvnw executable and download dependencies (cached layer)
+RUN chmod +x ./mvnw && ./mvnw dependency:go-offline
 
 # Copy source code
 COPY src ./src
