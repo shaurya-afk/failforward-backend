@@ -3,6 +3,7 @@ package com.failforward.deaddocs_backend.controller;
 import com.failforward.deaddocs_backend.dto.StoryRequest;
 import com.failforward.deaddocs_backend.dto.StoryResponse;
 import com.failforward.deaddocs_backend.entity.Story;
+import com.failforward.deaddocs_backend.exceptions.StoryNotFoundException;
 import com.failforward.deaddocs_backend.service.StoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -75,5 +76,17 @@ public class StoryController {
     public ResponseEntity<?> deleteStory(@PathVariable("id") Integer id){
         storyService.deleteStoryById(id);
         return ResponseEntity.status(204).build();
+    }
+
+    @GetMapping("mystories/{userId}")
+    public ResponseEntity<List<Story>> getMyStories(@PathVariable("userId") String userId){
+        return ResponseEntity.ok(storyService.getAllStoriesByUserId(userId));
+    }
+
+    @PatchMapping("/updateupvotes/{new_count}/{id}")
+    public ResponseEntity<?> updateUpVotes(@PathVariable("id") Integer id,
+    @PathVariable Integer new_count) throws StoryNotFoundException {
+            Story updatedStory = storyService.updateStoryByHelpfulVotes(id, new_count);
+            return  ResponseEntity.ok(updatedStory);
     }
 }

@@ -49,12 +49,13 @@ public class StoryService {
             throw new NullPointerException("Story not found");
         }
     }
-    public void updateStoryByHelpfulVotes(Integer id, int newHelpfulVotes) throws StoryNotFoundException {
+    public Story updateStoryByHelpfulVotes(Integer id, int newHelpfulVotes) throws StoryNotFoundException {
         Story story = getStoryById(id);
         if(story != null){
             story.setHelpfulVotes(newHelpfulVotes);
         }else{
             throw new NullPointerException("Story not found");
         }
+        return story;
     }
 }
