@@ -18,6 +18,12 @@ public class StoryLikesService {
         if (userId == null || storyId == null) {
             return false;
         }
+        
+        // Validate userId length
+        if (userId.length() > 1000) {
+            return false; // Invalid userId, treat as not liked
+        }
+        
         return storyLikeRepository.findByUserIdAndStoryId(userId, storyId).isPresent();
     }
 
@@ -31,6 +37,11 @@ public class StoryLikesService {
     public boolean likeStory(String userId, Integer storyId) {
         if (userId == null || storyId == null) {
             throw new IllegalArgumentException("UserId and storyId cannot be null");
+        }
+        
+        // Validate userId length
+        if (userId.length() > 1000) {
+            throw new IllegalArgumentException("UserId is too long (max 1000 characters)");
         }
         
         // Check if already liked within the same transaction
@@ -55,6 +66,11 @@ public class StoryLikesService {
     public boolean unlikeStory(String userId, Integer storyId) {
         if (userId == null || storyId == null) {
             throw new IllegalArgumentException("UserId and storyId cannot be null");
+        }
+        
+        // Validate userId length
+        if (userId.length() > 1000) {
+            throw new IllegalArgumentException("UserId is too long (max 1000 characters)");
         }
         
         // Check if liked within the same transaction

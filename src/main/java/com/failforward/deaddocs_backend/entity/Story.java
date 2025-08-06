@@ -18,7 +18,7 @@ public class Story {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", length = 1000)
     private String userId;
 
     @Column(name = "founder_name")

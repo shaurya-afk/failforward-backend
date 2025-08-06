@@ -59,31 +59,28 @@ public class StoryService {
     }
 
     /**
-     * Sync the helpful votes count with the actual like count from the database
-     * This ensures consistency between the Story entity and the story_likes table
-     * @param storyId the story ID to sync
-     * @return the updated story with correct like count
-     * @throws StoryNotFoundException if story not found
+     * Sync like count for a specific story
+     * This ensures consistency between Story entity and story_likes table
      */
     public Story syncLikeCount(Integer storyId) throws StoryNotFoundException {
         Story story = getStoryById(storyId);
-        int accurateLikeCount = storyLikesService.getAccurateLikeCount(storyId);
-        story.setHelpfulVotes(accurateLikeCount);
+        int accurateCount = (int) storyLikesService.getLikeCount(storyId);
+        story.setHelpfulVotes(accurateCount);
         return storyRepo.save(story);
     }
 
     /**
-     * Sync all stories' like counts to ensure database consistency
-     * This method should be called periodically or when inconsistencies are detected
+     * Sync like counts for all stories
+     * This ensures database consistency across all stories
      */
     public void syncAllLikeCounts() {
         List<Story> allStories = getAllStories();
         for (Story story : allStories) {
             try {
                 syncLikeCount(story.getId());
-            } catch (Exception e) {
+            } catch (StoryNotFoundException e) {
                 // Log error but continue with other stories
-                System.err.println("Error syncing like count for story " + story.getId() + ": " + e.getMessage());
+                System.err.println("Story not found during sync: " + story.getId());
             }
         }
     }

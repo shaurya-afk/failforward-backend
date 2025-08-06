@@ -13,7 +13,7 @@ public class StoryLike {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "userId", nullable = false)
+    @Column(name = "userId", nullable = false, length = 1000)
     private String userId;
 
     @Column(name = "story_id", nullable = false)
