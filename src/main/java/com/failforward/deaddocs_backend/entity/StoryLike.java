@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "story_likes", uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "id"}))
+@Table(name = "story_likes", uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "story_id"}))
 public class StoryLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

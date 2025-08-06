@@ -12,9 +12,11 @@ import java.util.List;
 @Transactional
 public class StoryService {
     private final StoryRepo storyRepo;
+    private final StoryLikesService storyLikesService;
 
-    public StoryService(StoryRepo storyRepo) {
+    public StoryService(StoryRepo storyRepo, StoryLikesService storyLikesService) {
         this.storyRepo = storyRepo;
+        this.storyLikesService = storyLikesService;
     }
 
     public List<Story> getAllStories(){
@@ -49,13 +51,40 @@ public class StoryService {
             throw new NullPointerException("Story not found");
         }
     }
+    
     public Story updateStoryByHelpfulVotes(Integer id, int newHelpfulVotes) throws StoryNotFoundException {
         Story story = getStoryById(id);
-        if(story != null){
-            story.setHelpfulVotes(newHelpfulVotes);
-        }else{
-            throw new NullPointerException("Story not found");
+        story.setHelpfulVotes(newHelpfulVotes);
+        return storyRepo.save(story);
+    }
+
+    /**
+     * Sync the helpful votes count with the actual like count from the database
+     * This ensures consistency between the Story entity and the story_likes table
+     * @param storyId the story ID to sync
+     * @return the updated story with correct like count
+     * @throws StoryNotFoundException if story not found
+     */
+    public Story syncLikeCount(Integer storyId) throws StoryNotFoundException {
+        Story story = getStoryById(storyId);
+        int accurateLikeCount = storyLikesService.getAccurateLikeCount(storyId);
+        story.setHelpfulVotes(accurateLikeCount);
+        return storyRepo.save(story);
+    }
+
+    /**
+     * Sync all stories' like counts to ensure database consistency
+     * This method should be called periodically or when inconsistencies are detected
+     */
+    public void syncAllLikeCounts() {
+        List<Story> allStories = getAllStories();
+        for (Story story : allStories) {
+            try {
+                syncLikeCount(story.getId());
+            } catch (Exception e) {
+                // Log error but continue with other stories
+                System.err.println("Error syncing like count for story " + story.getId() + ": " + e.getMessage());
+            }
         }
-        return story;
     }
 }
