@@ -7,7 +7,7 @@ import com.failforward.deaddocs_backend.service.StoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://fail-forward.vercel.app/")
 @RestController
 @RequestMapping("/api/stories")
 public class StoryLikesController {
