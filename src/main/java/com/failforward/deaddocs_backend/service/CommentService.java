@@ -36,6 +36,15 @@ public class CommentService {
             throw new IllegalArgumentException("Story ID, user ID, and content are required");
         }
 
+        // Validate field lengths to prevent database constraint violations
+        if (commentRequest.getUserId() != null && commentRequest.getUserId().length() > 255) {
+            throw new IllegalArgumentException("User ID is too long (max 255 characters)");
+        }
+        
+        if (commentRequest.getCommenterName() != null && commentRequest.getCommenterName().length() > 255) {
+            throw new IllegalArgumentException("Commenter name is too long (max 255 characters)");
+        }
+
         // Verify story exists
         Story story = storyService.getStoryById(commentRequest.getStoryId());
 

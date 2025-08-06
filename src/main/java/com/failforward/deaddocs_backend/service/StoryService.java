@@ -40,6 +40,27 @@ public class StoryService {
     }
 
     public Story addStory(Story story){
+        // Validate field lengths to prevent database constraint violations
+        if (story.getUserId() != null && story.getUserId().length() > 255) {
+            throw new IllegalArgumentException("User ID is too long (max 255 characters)");
+        }
+        
+        if (story.getFounderName() != null && story.getFounderName().length() > 255) {
+            throw new IllegalArgumentException("Founder name is too long (max 255 characters)");
+        }
+        
+        if (story.getStoryTitle() != null && story.getStoryTitle().length() > 255) {
+            throw new IllegalArgumentException("Story title is too long (max 255 characters)");
+        }
+        
+        if (story.getIndustry() != null && story.getIndustry().length() > 255) {
+            throw new IllegalArgumentException("Industry is too long (max 255 characters)");
+        }
+        
+        if (story.getPreviewText() != null && story.getPreviewText().length() > 1000) {
+            throw new IllegalArgumentException("Preview text is too long (max 1000 characters)");
+        }
+        
         return storyRepo.save(story);
     }
 

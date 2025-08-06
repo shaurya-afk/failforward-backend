@@ -17,10 +17,10 @@ public class Comment {
     @Column(name = "story_id", nullable = false)
     private Integer storyId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(name = "user_id", nullable = false, length = 255)
     private String userId;
 
-    @Column(name = "commenter_name")
+    @Column(name = "commenter_name", length = 255)
     private String commenterName;
 
     @Column(name = "is_anonymous", nullable = false)

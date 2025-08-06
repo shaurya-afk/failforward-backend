@@ -19,8 +19,8 @@ public class StoryLikesService {
             return false;
         }
         
-        // Validate userId length
-        if (userId.length() > 1000) {
+        // Validate userId length - be more conservative to avoid DB constraints
+        if (userId.length() > 255) {
             return false; // Invalid userId, treat as not liked
         }
         
@@ -39,9 +39,9 @@ public class StoryLikesService {
             throw new IllegalArgumentException("UserId and storyId cannot be null");
         }
         
-        // Validate userId length
-        if (userId.length() > 1000) {
-            throw new IllegalArgumentException("UserId is too long (max 1000 characters)");
+        // Validate userId length - be more conservative to avoid DB constraints
+        if (userId.length() > 255) {
+            throw new IllegalArgumentException("UserId is too long (max 255 characters)");
         }
         
         // Check if already liked within the same transaction
@@ -68,9 +68,9 @@ public class StoryLikesService {
             throw new IllegalArgumentException("UserId and storyId cannot be null");
         }
         
-        // Validate userId length
-        if (userId.length() > 1000) {
-            throw new IllegalArgumentException("UserId is too long (max 1000 characters)");
+        // Validate userId length - be more conservative to avoid DB constraints
+        if (userId.length() > 255) {
+            throw new IllegalArgumentException("UserId is too long (max 255 characters)");
         }
         
         // Check if liked within the same transaction

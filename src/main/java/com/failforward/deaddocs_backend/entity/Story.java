@@ -18,22 +18,22 @@ public class Story {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "user_id", length = 1000)
+    @Column(name = "user_id", length = 255)
     private String userId;
 
-    @Column(name = "founder_name")
+    @Column(name = "founder_name", length = 255)
     private String founderName;
 
     @Column(name = "is_anonymous")
     private boolean isAnonymous;
 
-    @Column(name = "story_title")
+    @Column(name = "story_title", length = 255)
     private String storyTitle;
 
-    @Column(name = "industry")
+    @Column(name = "industry", length = 255)
     private String industry;
 
-    @Column(name = "preview_text")
+    @Column(name = "preview_text", length = 1000)
     private String previewText;
 
     @Column(name = "helpful_votes")
